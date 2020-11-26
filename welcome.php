@@ -163,13 +163,60 @@ if (isset($_GET["action"])){
                         $total = $total + ($value["item_quantity"] * $value["product_price"]);
                     }
                         ?>
+ 						<?php
+						$couponValid = "No Coupon Code Applied.";
+						$couponBool = false;
+						if(isset($_POST['submit']))
+						{
+							switch($_POST['promo'])
+							{
+								case 'freeFive':
+								$total = $total - 5;
+								$couponBool = true;
+								break;
+								
+								case '20Off':
+								$total = $total - (.2 * $total);
+								$couponBool = true;
+								break;
+								
+								default:
+								$couponBool = false;
+								break;
+							}
+						}
+						if (isset($_POST['submit']))
+						{
+							if ($couponBool == true)
+							{
+								echo '<span style="color:#6e6;text-align:center;">Coupon Code: </span>';
+								echo $_POST['promo'];
+								echo '<span style="color:#6e6;text-align:center;"> has been applied. </span>';
+							}
+							else
+							{
+								echo '<span style="color:#ff5932;text-align:center;"> Invalid Coupon Code. (case-sensitive)</span>';
+							}
+
+						}
+						else
+						{
+							echo '<span style="color:#ff5932;text-align:center;">' .$couponValid. '</span>';
+						}
+						?>
                         <tr>
-                            <td colspan="3" align="right">Total</td>
+							<td colspan="0" align="right">Coupon Code (1 Per Order):</td>
+							<th align="right">
+							<form method="post" action="welcome.php">
+							<input type="text" id="promo" name="promo">
+							<input type="submit" name="submit" value="submit">
+							</form>
+							</th>
+                            <td colspan="1" align="right">Total</td>
                             <th align="right">$ <?php echo number_format($total, 2); ?></th>
                             <td></td>
                         </tr>
                         <?php
-                        print_r($_SESSION);
                     }
                 ?>
             </table>
