@@ -8,6 +8,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     exit;
 }
 
+function debugToConsole($msg) { 
+    echo "<script>console.log(".json_encode($msg).")</script>";
+}
+
 $con = mysqli_connect("localhost:3306", "root", "","demo");
 
 if (isset($_POST["add"])){
@@ -24,7 +28,9 @@ if (isset($_POST["add"])){
             $_SESSION["cart"][$count] = $item_array;
             echo '<script>window.location="welcome.php"</script>';
         }else{
-            echo '<script>alert("Product is already Added to Cart")</script>';
+            $index = array_search($_GET["id"], $item_array_id);
+            $quantity = $_SESSION["cart"][$index]["item_quantity"];
+            $_SESSION["cart"][$index]["item_quantity"] = $quantity + $_POST["quantity"];
             echo '<script>window.location="welcome.php"</script>';
         }
     }else{
@@ -43,7 +49,6 @@ if (isset($_GET["action"])){
         foreach ($_SESSION["cart"] as $keys => $value){
             if ($value["product_id"] == $_GET["id"]){
                 unset($_SESSION["cart"][$keys]);
-                echo '<script>alert("Product has been Removed...!")</script>';
                 echo '<script>window.location="welcome.php"</script>';
             }
         }
@@ -56,7 +61,8 @@ if (isset($_GET["action"])){
 <head>
     <meta charset="UTF-8">
     <title>Cart</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css"> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <style type="text/css">
         body{ font: 14px sans-serif; text-align: center; }
         @import url('https://fonts.googleapis.com/css?family=Titillium+Web');
@@ -89,19 +95,53 @@ if (isset($_GET["action"])){
         table th{
             background-color: #efefef;
         }
+        .column{
+            width: calc(100% / 5);
+            display: inline-block;
+            
+        }
+        .cart-icon
+        {
+            color:black;
+            
+        }
+
+        .cart-icon:hover
+        {
+            color:rgb(218, 198, 18);
+            
+        }
+
+        .cart-icon:active
+        {
+            color:rgb(218, 198, 18);
+            
+        }
     </style>
 </head>
 <body>
-    <div class="page-header">
-        <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome to our site.</h1>
-    </div>
-    <p>
-        <a href="reset-password.php" class="btn btn-warning">Reset Your Password</a>
-        <a href="logout.php" class="btn btn-danger">Sign Out of Your Account</a>
-    </p>
-
-    <div class="container" style="width: 65%">
-        <h2>Shopping Cart</h2>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-link" href="list-item.php">List Product</a>
+            <a class="nav-link" href="my-listings.php">My Listings</a>
+            <a class="nav-link" href="reset-password.php">Reset Password</a>
+            <a class="nav-link" href="logout.php">Logout</a>
+            <a class="nav-link disabled" style="color:rgb(218, 198, 18)" href="#" tabindex="-1" aria-disabled="true">User: <?php echo htmlspecialchars($_SESSION["username"]);?></a>
+        </div>
+        </div>
+        <div class="navbar-nav ml-auto">
+                <a class="cart-icon" href="welcome.php">
+                    <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-cart3" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm7 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                    </svg>
+                </a>
+        </div>
+    </nav>
+    <div class="container" style="width: 85%">
         <?php
             $query = "SELECT * FROM product ORDER BY id ASC ";
             $result = mysqli_query($con,$query);
@@ -111,18 +151,18 @@ if (isset($_GET["action"])){
                 while ($row = mysqli_fetch_array($result)) {
 
                     ?>
-                    <div class="col-md-3">
+                    <div class="column">
 
                         <form method="post" action="welcome.php?action=add&id=<?php echo $row["id"]; ?>">
 
-                            <div class="product">
-                                <img src="<?php echo $row["image"]; ?>" class="img-responsive">
-                                <h5 class="text-info"><?php echo $row["pname"]; ?></h5>
-                                <h5 class="text-danger"><?php echo $row["price"]; ?></h5>
+                            <div class="product" class="row" style="margin-top: 5px;">
+                                <img src="<?php echo $row["image"]; ?>" class="img-fluid" alt="Responsive image">
+                                <h5 class="text-dark"><?php echo $row["pname"]; ?></h5>
+                                <h5 class="text-warning"><?php echo $row["price"]; ?></h5>
                                 <input type="text" name="quantity" class="form-control" value="1">
                                 <input type="hidden" name="hidden_name" value="<?php echo $row["pname"]; ?>">
                                 <input type="hidden" name="hidden_price" value="<?php echo $row["price"]; ?>">
-                                <input type="submit" name="add" style="margin-top: 5px;" class="btn btn-success"
+                                <input type="submit" name="add" style="margin-top: 5px;" class="btn btn-dark"
                                        value="Add to Cart">
                             </div>
                         </form>
@@ -133,7 +173,6 @@ if (isset($_GET["action"])){
         ?>
 
         <div style="clear: both"></div>
-        <h3 class="title2">Shopping Cart Details</h3>
         <div class="table-responsive">
             <table class="table table-bordered">
             <tr>
@@ -218,6 +257,7 @@ if (isset($_GET["action"])){
                         </tr>
                         <?php
                     }
+                    //print_r($_SESSION);
                 ?>
             </table>
         </div>

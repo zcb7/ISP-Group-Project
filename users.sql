@@ -1,7 +1,7 @@
 CREATE DATABASE demo;
 USE demo;
 
-DROP TABLE IF EXISTS 'users';
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL,
@@ -17,12 +17,13 @@ CREATE TABLE IF NOT EXISTS `product` (
   `pname` varchar(255) DEFAULT NULL,
   `image` varchar(255) DEFAULT NULL,
   `price` double DEFAULT NULL,
+  `seller` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
-INSERT INTO `product` (`id`, `pname`, `image`, `price`) VALUES
-(1, 'Beats Headphones', 'Beats.jpg', 299.99),
-(2, 'BenQ Monitor', 'BenQ.jpg', 399.99),
-(3, '2080 Graphics Card', 'GraphicsCard.jpg', 499.99),
-(4, 'iPhoneXR', 'iPhoneXR.jpg', 899.99),
-(5, 'GPro Wireless Mouse', 'GPro.jpg', 99.99);
+INSERT INTO `product` (`id`, `pname`, `image`, `price`, `seller`) VALUES
+(1, 'Beats Headphones', 'Beats.jpg', 299.99, 'admin'),
+(2, 'BenQ Monitor', 'BenQ.jpg', 399.99, 'admin'),
+(3, '2080 Graphics Card', 'GraphicsCard.jpg', 499.99, 'admin'),
+(4, 'iPhoneXR', 'iPhoneXR.jpg', 899.99, 'admin'),
+(5, 'GPro Wireless Mouse', 'GPro.jpg', 99.99, 'admin');

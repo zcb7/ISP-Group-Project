@@ -12,52 +12,60 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 require_once "config.php";
  
 // Define variables and initialize with empty values
-$new_password = $confirm_password = "";
-$new_password_err = $confirm_password_err = "";
+$product = $image_url = $price = "";
+$product_err = $image_err = $price_err = "";
  
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
  
     // Validate new password
-    if(empty(trim($_POST["new_password"]))){
-        $new_password_err = "Please enter the new password.";     
-    } elseif(strlen(trim($_POST["new_password"])) < 6){
-        $new_password_err = "Password must have atleast 6 characters.";
+    if(empty(trim($_POST["new_product"]))){
+        $product_err = "Please enter the new product.";     
+    } elseif(strlen(trim($_POST["new_product"])) < 6){
+        $product_err = "Product must have atleast 6 characters.";
     } else{
-        $new_password = trim($_POST["new_password"]);
+        $product = trim($_POST["new_product"]);
     }
     
-    // Validate confirm password
-    if(empty(trim($_POST["confirm_password"]))){
-        $confirm_password_err = "Please confirm the password.";
+    // Validate image URL
+    if(empty(trim($_POST["image_url"]))){
+        $image_err = "Please enter the image URL.";     
+    } elseif(strlen(trim($_POST["image_url"])) < 6){
+        $image_err = "Image URL must have atleast 6 characters.";
     } else{
-        $confirm_password = trim($_POST["confirm_password"]);
-        if(empty($new_password_err) && ($new_password != $confirm_password)){
-            $confirm_password_err = "Password did not match.";
-        }
+        $image_url = trim($_POST["image_url"]);
+    }
+
+    // Validate price
+    if(empty(trim($_POST["price"]))){
+        $price_err = "Please enter the price.";     
+    } elseif(trim($_POST["price"]) < 0){
+        $price_err = "Price must be greater than 0.";
+    } else{
+        $price = trim($_POST["price"]);
     }
         
-    // Check input errors before updating the database
-    if(empty($new_password_err) && empty($confirm_password_err)){
-        // Prepare an update statement
-        $sql = "UPDATE users SET password = ? WHERE id = ?";
+    // Check input errors before inserting in database
+    if(empty($product_err) && empty($image_err) && empty($price_err)){
         
+        // Prepare an insert statement
+        $sql = "INSERT INTO product (pname, image, price, seller) VALUES (?, ?, ?, ?)";
+         
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "si", $param_password, $param_id);
-            
-            // Set parameters
-            $param_password = password_hash($new_password, PASSWORD_DEFAULT);
-            $param_id = $_SESSION["id"];
+            mysqli_stmt_bind_param($stmt, "ssss", $param_product, $param_image, $param_price, $param_seller);
+
+            $param_product = $product;
+            $param_image = $image_url;
+            $param_price = $price;
+            $param_seller = $_SESSION["username"];
             
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
-                // Password updated successfully. Destroy the session, and redirect to login page
-                session_destroy();
+                // Redirect to login page
                 header("location: login.php");
-                exit();
             } else{
-                echo "Oops! Something went wrong. Please try again later.";
+                echo "Something went wrong. Please try again later.";
             }
 
             // Close statement
@@ -74,7 +82,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Reset Password</title>
+    <title>List Product</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <style type="text/css">
         body{ font: 14px sans-serif; }
@@ -121,17 +129,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         </div>
 </nav>
     <div class="wrapper">
-        <h2>Reset Password</h2>
+        <h2>List Product</h2>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post"> 
-            <div class="form-group <?php echo (!empty($new_password_err)) ? 'has-error' : ''; ?>">
-                <label>New Password</label>
-                <input type="password" name="new_password" class="form-control" value="<?php echo $new_password; ?>">
-                <span class="help-block"><?php echo $new_password_err; ?></span>
+            <div class="form-group <?php echo (!empty($product_err)) ? 'has-error' : ''; ?>">
+                <label>Product Name</label>
+                <input name="new_product" class="form-control" value="<?php echo $product; ?>">
+                <span class="help-block"><?php echo $product_err; ?></span>
             </div>
-            <div class="form-group <?php echo (!empty($confirm_password_err)) ? 'has-error' : ''; ?>">
-                <label>Confirm Password</label>
-                <input type="password" name="confirm_password" class="form-control">
-                <span class="help-block"><?php echo $confirm_password_err; ?></span>
+            <div class="form-group <?php echo (!empty($image_err)) ? 'has-error' : ''; ?>">
+                <label>Image URL</label>
+                <input name="image_url" class="form-control">
+                <span class="help-block"><?php echo $image_err; ?></span>
+            </div>
+            <div class="form-group <?php echo (!empty($price_err)) ? 'has-error' : ''; ?>">
+                <label>Price</label>
+                <input name="price" class="form-control">
+                <span class="help-block"><?php echo $price_err; ?></span>
             </div>
             <div class="form-group">
                 <input type="submit" class="btn btn-dark" value="Submit">
