@@ -82,11 +82,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>List Product</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <style type="text/css">
-        body{ font: 14px sans-serif; }
-        .wrapper{ width: 350px; padding: 20px; }
+        body{ font: 14px sans-serif; text-align: center; background-color: #e4b61a;}
+        .wrapper{ width: 350px; padding: 20px; margin: auto; border-style: double; border-width: thick;}
         .cart-icon
         {
             color:black;
@@ -107,25 +108,21 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-            <a class="nav-link" href="list-item.php">List Item</a>
+		<div class="navbar-header">
+		<a class="navbar-brand" href="welcome.php" style="color: #fcc602;">Universal Mart</a>
+		</div>
+            <a class="nav-link" href="list-item.php">List Product</a>
             <a class="nav-link" href="my-listings.php">My Listings</a>
             <a class="nav-link" href="reset-password.php">Reset Password</a>
             <a class="nav-link" href="logout.php">Logout</a>
             <a class="nav-link disabled" style="color:rgb(218, 198, 18)" href="#" tabindex="-1" aria-disabled="true">User: <?php echo htmlspecialchars($_SESSION["username"]); ?></a>
         </div>
-        </div>
-        <div class="navbar-nav ml-auto">
-                <a class="cart-icon" href="welcome.php">
-                    <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-cart3" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm7 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
-                    </svg>
-                </a>
         </div>
 </nav>
     <div class="wrapper">
@@ -142,7 +139,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <span class="help-block"><?php echo $image_err; ?></span>
             </div>
             <div class="form-group <?php echo (!empty($price_err)) ? 'has-error' : ''; ?>">
-                <label>Price</label>
+                <label>Price ($)</label>
                 <input name="price" class="form-control">
                 <span class="help-block"><?php echo $price_err; ?></span>
             </div>

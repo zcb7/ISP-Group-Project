@@ -3,7 +3,7 @@
 session_start();
  
 // Check if the user is already logged in, if yes then redirect him to welcome page
-if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == true){
+if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
   header("location: welcome.php");
   exit;
 }
@@ -92,10 +92,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-<style type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+    <style type="text/css">
         body{ font: 14px sans-serif; background-color: #e4b61a;}
         .wrapper{ width: 350px; padding: 20px; margin: auto; border-style: double; border-width: thick;}
 		.center{ display: block; margin-left: auto; margin-right: auto; width: 20%; }

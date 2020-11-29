@@ -8,10 +8,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     exit;
 }
 
-function debugToConsole($msg) { 
-    echo "<script>console.log(".json_encode($msg).")</script>";
-}
-
 $con = mysqli_connect("localhost:3306", "root", "","demo");
 
 if (isset($_POST["add"])){
@@ -28,9 +24,7 @@ if (isset($_POST["add"])){
             $_SESSION["cart"][$count] = $item_array;
             echo '<script>window.location="welcome.php"</script>';
         }else{
-            $index = array_search($_GET["id"], $item_array_id);
-            $quantity = $_SESSION["cart"][$index]["item_quantity"];
-            $_SESSION["cart"][$index]["item_quantity"] = $quantity + $_POST["quantity"];
+            echo '<script>alert("Product is already Added to Cart")</script>';
             echo '<script>window.location="welcome.php"</script>';
         }
     }else{
@@ -49,6 +43,7 @@ if (isset($_GET["action"])){
         foreach ($_SESSION["cart"] as $keys => $value){
             if ($value["product_id"] == $_GET["id"]){
                 unset($_SESSION["cart"][$keys]);
+                echo '<script>alert("Product has been Removed...!")</script>';
                 echo '<script>window.location="welcome.php"</script>';
             }
         }
@@ -60,10 +55,8 @@ if (isset($_GET["action"])){
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cart</title>
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css"> -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <style type="text/css">
         body{ font: 14px sans-serif; text-align: center; background-color: #e4b61a;}
         @import url('https://fonts.googleapis.com/css?family=Titillium+Web');
@@ -100,53 +93,23 @@ if (isset($_GET["action"])){
             background-color: #fcc602;
             border: 2px solid black;
         }
-        .column{
-            width: calc(100% / 5);
-            display: inline-block;
-            
-        }
-        .cart-icon
-        {
-            color:black;
-            
-        }
 
-        .cart-icon:hover
-        {
-            color:rgb(218, 198, 18);
-            
-        }
-
-        .cart-icon:active
-        {
-            color:rgb(218, 198, 18);
-            
-        }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-		<div class="navbar-header">
-		<a class="navbar-brand" href="welcome.php" style="color: #fcc602;">Universal Mart</a>
-		</div>
-            <a class="nav-link" href="list-item.php">List Product</a>
-            <a class="nav-link" href="my-listings.php">My Listings</a>
-            <a class="nav-link" href="reset-password.php">Reset Password</a>
-            <a class="nav-link" href="logout.php">Logout</a>
-            <a class="nav-link disabled" style="color:#fcc602" href="#" tabindex="-1" aria-disabled="true">User: <?php echo htmlspecialchars($_SESSION["username"]);?></a>
-        </div>
-        </div>
-		<div>
-		<img src="logoIcon.png" alt="logo icon" width="50" height="50">
-		</div>
-    </nav>
-    <div class="container" style="width: 80%;border-style: double;">
-	<h2 style="color: black; text-decoration: underline;">Items:</h2>
+    <div class="page-header">
+	<div>
+	<img src="logoIcon.png" alt="logo icon" width="250" height="200">
+	</div>
+        <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome to Universal Mart!</h1>
+    <p>
+        <a href="reset-password.php" class="btn btn-warning">Reset Your Password</a>
+        <a href="logout.php" class="btn btn-danger">Sign Out</a>
+    </p
+	    </div>
+
+    <div class="container" style="width: 65%;border-style: dashed;">
+        <h2 style="color: black; text-decoration: underline;">Items</h2>
         <?php
             $query = "SELECT * FROM product ORDER BY id ASC ";
             $result = mysqli_query($con,$query);
@@ -156,18 +119,20 @@ if (isset($_GET["action"])){
                 while ($row = mysqli_fetch_array($result)) {
 
                     ?>
-                    <div class="column">
+                    <div class="col-md-3">
 
                         <form method="post" action="welcome.php?action=add&id=<?php echo $row["id"]; ?>">
 
-                            <div class="product" class="row" style="margin-top: 5px;">
-                                <img src="<?php echo $row["image"]; ?>" class="img-fluid" alt="product image">
-                                <h5 class="text-dark"><?php echo $row["pname"]; ?></h5>
-                                <h5 class="showPrice" style="color: #FF4500;"><?php echo "$"; echo $row["price"]; ?></h5>
+                            <div class="product">
+                                <img src="<?php echo $row["image"]; ?>" class="img-responsive">
+                                <h5 class="text-info" style="color: black; background-color: #e4b61a; border-style: solid;"><?php echo $row["pname"]; ?></h5>
+								<div class="price" style="background-color: #fcc602;">
+                                <h5 class="text-danger" style="color: #FF4500;"><?php echo "$"; echo $row["price"]; ?></h5>
+								</div>
                                 <input type="text" name="quantity" class="form-control" value="1">
                                 <input type="hidden" name="hidden_name" value="<?php echo $row["pname"]; ?>">
                                 <input type="hidden" name="hidden_price" value="<?php echo $row["price"]; ?>">
-                                <input type="submit" name="add" style="margin-top: 5px;" class="btn btn-dark"
+                                <input type="submit" name="add" style="margin-top: 5px;" class="btn btn-success"
                                        value="Add to Cart">
                             </div>
                         </form>
@@ -178,7 +143,7 @@ if (isset($_GET["action"])){
         ?>
 
         <div style="clear: both"></div>
-        <h3 class="title2" style="color: black; text-decoration: underline;">Cart:</h3>
+        <h3 class="title2" style="color: black; text-decoration: underline;">Your Shopping Cart</h3>
         <div class="table-responsive">
             <table class="table table-bordered">
             <tr>
@@ -266,11 +231,9 @@ if (isset($_GET["action"])){
                         </tr>
                         <?php
                     }
-                    //print_r($_SESSION);
                 ?>
             </table>
         </div>
-
     </div>
 </body>
 </html>
