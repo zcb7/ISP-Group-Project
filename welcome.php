@@ -83,7 +83,7 @@ if (isset($_GET["action"])){
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css"> -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <style type="text/css">
-        body{ font: 14px sans-serif; text-align: center; background-color: #e4b61a;}
+        body{ font: 14px sans-serif; text-align: center; background-color: grey;}
         @import url('https://fonts.googleapis.com/css?family=Titillium+Web');
 
         *{
@@ -118,26 +118,12 @@ if (isset($_GET["action"])){
             background-color: #fcc602;
             border: 2px solid black;
         }
+        td{
+            background-color:#fcc602;
+        }
         .column{
             width: calc(100% / 5);
             display: inline-block;
-            
-        }
-        .cart-icon
-        {
-            color:black;
-            
-        }
-
-        .cart-icon:hover
-        {
-            color:rgb(218, 198, 18);
-            
-        }
-
-        .cart-icon:active
-        {
-            color:rgb(218, 198, 18);
             
         }
     </style>
@@ -158,10 +144,6 @@ if (isset($_GET["action"])){
             <a class="nav-link" href="logout.php">Logout</a>
             <a class="nav-link disabled" style="color:#fcc602" href="#" tabindex="-1" aria-disabled="true">User: <?php echo htmlspecialchars($_SESSION["username"]);?></a>
         </div>
-        </div>
-		<div>
-		<img src="logoIcon.png" alt="logo icon" width="50" height="50">
-		</div>
     </nav>
     <div class="container" style="width: 80%;border-style: double;">
 	<h2 style="color: black; text-decoration: underline;">Items:</h2>
@@ -181,7 +163,7 @@ if (isset($_GET["action"])){
                             <div class="product" class="row" style="margin-top: 5px;">
                                 <img src="<?php echo $row["image"]; ?>" class="img-fluid" alt="product image">
                                 <h5 class="text-dark"><?php echo $row["pname"]; ?></h5>
-                                <h5 class="showPrice" style="color: #FF4500;"><?php echo "$"; echo $row["price"]; ?></h5>
+                                <h5 class="showPrice" class="text-dark"><?php echo "$"; echo $row["price"]; ?></h5>
                                 <input type="text" name="quantity" class="form-control" value="1">
                                 <input type="hidden" name="hidden_name" value="<?php echo $row["pname"]; ?>">
                                 <input type="hidden" name="hidden_price" value="<?php echo $row["price"]; ?>">
@@ -273,8 +255,8 @@ if (isset($_GET["action"])){
 							<th align="right">
 							<!--form to enter coupon code -->
 							<form method="post" action="welcome.php">
-							<input type="text" id="promo" name="promo">
-							<input type="submit" name="submit" value="submit">
+							<input type="text" class ="form-control" id="promo" name="promo">
+							<input type="submit" class="btn btn-dark" name="submit" value="submit">
 							</form>
 							</th>
                             <td colspan="1" align="right">Total</td>

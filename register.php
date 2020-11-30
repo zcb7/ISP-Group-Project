@@ -101,16 +101,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <title>Sign Up</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <style type="text/css">
-        body{ font: 14px sans-serif; background-color: #e4b61a;}
+        body{ font: 14px sans-serif; background-color: grey;}
         .wrapper{ width: 350px; padding: 20px; margin: auto; border-style: double; border-width: thick;}
 		.center{ display: block; margin-left: auto; margin-right: auto; width: 20%;}
+        .yellow{ background-color:#fcc602;}
     </style>
 </head>
 <body>
 	<div>
 	<h1> <img src="logo.png" alt="Universal Mart Logo" class="center"> </h1>
     </div>
-    <div class="wrapper">
+    <div class="wrapper yellow">
         <h2>Sign Up</h2>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
@@ -129,8 +130,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <span class="help-block"><?php echo $confirm_password_err; ?></span>
             </div>
             <div class="form-group">
-                <input type="submit" class="btn btn-success" value="Submit">
-                <input type="reset" class="btn btn-dark" value="Reset">
+                <input type="submit" class="btn btn-dark" value="Submit">
+                <input type="reset" class="btn btn-secondary" value="Reset">
             </div>
             <p>Already have an account? <a href="login.php">Login here</a>.</p>
         </form>

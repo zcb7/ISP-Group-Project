@@ -78,25 +78,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <title>Reset Password</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <style type="text/css">
-        body{ font: 14px sans-serif; background-color: #e4b61a;}
+        body{ font: 14px sans-serif; background-color: grey;}
         .wrapper{ width: 350px; padding: 20px; margin: auto; border-style: double; border-width: thick;}
-        .cart-icon
-        {
-            color:black;
-            
-        }
-
-        .cart-icon:hover
-        {
-            color:rgb(218, 198, 18);
-            
-        }
-
-        .cart-icon:active
-        {
-            color:rgb(218, 198, 18);
-            
-        }
+        .center{ display: block; margin-left: auto; margin-right: auto; width: 20%; }
+        .yellow{ background-color:#fcc602;}
     </style>
 </head>
 <body>
@@ -117,7 +102,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         </div>
         </div>
 </nav>
-    <div class="wrapper">
+    <div>
+	    <h1> <img src="logo.png" alt="Universal Mart Logo" class="center"> </h1>
+    </div>
+    <div class="wrapper yellow">
         <h2>Reset Password</h2>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post"> 
             <div class="form-group <?php echo (!empty($new_password_err)) ? 'has-error' : ''; ?>">

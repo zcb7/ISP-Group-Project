@@ -95,17 +95,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-<style type="text/css">
-        body{ font: 14px sans-serif; background-color: #e4b61a;}
+    <style type="text/css">
+        body{ font: 14px sans-serif; background-color: grey;}
         .wrapper{ width: 350px; padding: 20px; margin: auto; border-style: double; border-width: thick;}
 		.center{ display: block; margin-left: auto; margin-right: auto; width: 20%; }
+        .yellow{background-color:#fcc602;}
     </style>
 </head>
 <body>
 	<div>
 	<h1> <img src="logo.png" alt="Universal Mart Logo" class="center"> </h1>
     </div>
-    <div class="wrapper">
+    <div class="wrapper yellow">
 		<h2>Login</h2>
         <p>Please fill in your credentials to login.</p>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
@@ -120,9 +121,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <span class="help-block"><?php echo $password_err; ?></span>
             </div>
             <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Login">
+                <input type="submit" class="btn btn-dark" value="Login">
             </div>
-            <p>Don't have an account? <a href="register.php">Sign up now</a>.</p>
+            <p>Don't have an account? <a href="register.php">Sign up</a>.</p>
         </form>
     </div>    
 </body>
