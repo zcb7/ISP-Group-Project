@@ -124,6 +124,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             </div>
             <p>Don't have an account? <a href="register.php">Sign up</a>.</p>
         </form>
+        <a href="ISP-Project-Final-Report.docx" download>Download Final Report</a>
+        <br>
+        <a href="2020 ISP Final Project.pptx" download>Download Final PowerPoint</a>
     </div>    
 </body>
 </html>

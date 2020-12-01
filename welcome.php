@@ -163,6 +163,8 @@ if (isset($_GET["action"])){
             <a class="nav-link" href="reset-password.php">Reset Password</a>
             <a class="nav-link" href="logout.php">Logout</a>
             <a class="nav-link disabled" style="color:#fcc602" href="#" tabindex="-1" aria-disabled="true">User: <?php echo htmlspecialchars($_SESSION["username"]);?></a>
+            <a class="nav-link" href="ISP-Project-Final-Report.docx" download>Download Final Report</a>
+            <a class="nav-link" href="2020 ISP Final Project.pptx" download>Download Final PowerPoint</a>
         </div>
     </nav>
     <div class="container" style="width: 80%;border-style: double;">
