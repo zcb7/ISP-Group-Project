@@ -14,7 +14,7 @@ function debugToConsole($msg) {
 
 $con = mysqli_connect("localhost:3306", "root", "","demo");
 
-if (isset($_POST["edit"])){
+if (isset($_POST["remove"])){
     debugToConsole($_GET["id"]);
     $id = $_GET["id"];
     $sql = "DELETE FROM product WHERE id = '".$_GET["id"]."'";
@@ -109,10 +109,11 @@ if (isset($_POST["edit"])){
                                 <img src="<?php echo $row["image"]; ?>" class="img-fluid" alt="product image">
                                 <h5 class="text-dark"><?php echo $row["pname"]; ?></h5>
                                 <h5 class="showPrice" class="text-dark"><?php echo "$"; echo $row["price"]; ?></h5>
+                                <h5 class="showPrice" class="text-dark"><?php echo "Stock: "; echo $row["stock"]; ?></h5>
                                 <input type="text" name="quantity" class="form-control" value="1">
                                 <input type="hidden" name="hidden_name" value="<?php echo $row["pname"]; ?>">
                                 <input type="hidden" name="hidden_price" value="<?php echo $row["price"]; ?>">
-                                <input type="submit" name="edit" style="margin-top: 5px;" class="btn btn-danger"
+                                <input type="submit" name="remove" style="margin-top: 5px;" class="btn btn-danger"
                                        value="Remove Listing">
                             </div>
                         </form>

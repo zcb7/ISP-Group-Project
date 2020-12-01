@@ -21,8 +21,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Validate new password
     if(empty(trim($_POST["new_product"]))){
         $product_err = "Please enter the new product.";     
-    } elseif(strlen(trim($_POST["new_product"])) < 6){
-        $product_err = "Product must have atleast 6 characters.";
+    } elseif(strlen(trim($_POST["new_product"])) < 2){
+        $product_err = "Product must have atleast 2 characters.";
     } else{
         $product = trim($_POST["new_product"]);
     }
@@ -44,21 +44,31 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     } else{
         $price = trim($_POST["price"]);
     }
+
+    // Validate stock
+    if(empty(trim($_POST["stock"]))){
+        $stock_err = "Please enter the stock.";     
+    } elseif(trim($_POST["stock"]) < 0){
+        $stock_err = "Stock must be greater than 0.";
+    } else{
+        $stock = trim($_POST["stock"]);
+    }
         
     // Check input errors before inserting in database
     if(empty($product_err) && empty($image_err) && empty($price_err)){
         
         // Prepare an insert statement
-        $sql = "INSERT INTO product (pname, image, price, seller) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO product (pname, image, price, seller, stock) VALUES (?, ?, ?, ?, ?)";
          
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ssss", $param_product, $param_image, $param_price, $param_seller);
+            mysqli_stmt_bind_param($stmt, "sssss", $param_product, $param_image, $param_price, $param_seller, $param_stock);
 
             $param_product = $product;
             $param_image = $image_url;
             $param_price = $price;
             $param_seller = $_SESSION["username"];
+            $param_stock = $stock;
             
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
@@ -129,6 +139,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <div class="form-group <?php echo (!empty($price_err)) ? 'has-error' : ''; ?>">
                 <label>Price ($)</label>
                 <input name="price" class="form-control">
+                <span class="help-block"><?php echo $price_err; ?></span>
+            </div>
+            <div class="form-group <?php echo (!empty($price_err)) ? 'has-error' : ''; ?>">
+                <label>Stock</label>
+                <input name="stock" class="form-control">
                 <span class="help-block"><?php echo $price_err; ?></span>
             </div>
             <div class="form-group">

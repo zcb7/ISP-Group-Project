@@ -18,12 +18,13 @@ CREATE TABLE IF NOT EXISTS `product` (
   `image` varchar(255) DEFAULT NULL,
   `price` double DEFAULT NULL,
   `seller` varchar(255) DEFAULT NULL,
+  `stock` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
-INSERT INTO `product` (`id`, `pname`, `image`, `price`, `seller`) VALUES
-(1, 'Beats Headphones', 'Beats.jpg', 299.99, 'admin'),
-(2, 'BenQ Monitor', 'BenQ.jpg', 399.99, 'admin'),
-(3, '2080 Graphics Card', 'GraphicsCard.jpg', 499.99, 'admin'),
-(4, 'iPhoneXR', 'iPhoneXR.jpg', 899.99, 'admin'),
-(5, 'GPro Wireless Mouse', 'GPro.jpg', 99.99, 'admin');
+INSERT INTO `product` (`id`, `pname`, `image`, `price`, `seller`, `stock`) VALUES
+(1, 'Beats Headphones', 'Beats.jpg', 299.99, 'admin', 20),
+(2, 'BenQ Monitor', 'BenQ.jpg', 399.99, 'admin', 15),
+(3, '2080 Graphics Card', 'GraphicsCard.jpg', 499.99, 'admin', 27),
+(4, 'iPhoneXR', 'iPhoneXR.jpg', 899.99, 'admin', 10),
+(5, 'GPro Wireless Mouse', 'GPro.jpg', 99.99, 'admin', 32);
